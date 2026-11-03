@@ -59,3 +59,10 @@ def test_long_input_truncated(app):
 def test_blank_input_ignored(app):
     at = ask(app, "   ")
     assert not at.expander
+
+
+def test_sources_link_to_the_report_page(app):
+    at = ask(app, "What was inflation in 2024?")
+    links = " ".join(m.value for m in at.markdown)
+    assert "emr2024_en_book.pdf#page=38" in links  # PDFs open at the cited page
+    assert "monetary-policy-statement-09072025" in links

@@ -18,9 +18,9 @@ DASHBOARD = ("https://app.powerbi.com/view?r=eyJrIjoiZmZjNDg2ODItNzJhMy00OTllLWJ
              "kY2JiMGUyLTlmZWEtNGY1NC04NjcwLTY3MjcwNzc5N2FkYSIsImMiOjEwfQ%3D%3D")
 MAX_CHARS, TOP_K = 1000, 5
 EXAMPLES = ["Why did inflation rise in 2022?", "Bilakah BNM menurunkan OPR kepada 2.75%?",
-            "What was food inflation in Sabah last month?", "Berapakah unjuran pertumbuhan ekonomi bagi 2026?"]
+            "What was food inflation in Sabah last month?", "Unjuran pertumbuhan ekonomi 2026?"]
 
-st.set_page_config(page_title="Malaysia Economy Assistant", page_icon=":material/forum:")
+st.set_page_config(page_title="Malaysia Economy Assistant", page_icon=":material/account_balance:")
 
 
 @st.cache_resource(show_spinner="Downloading Bank Negara reports (first visit only, about a minute)...")
@@ -29,8 +29,17 @@ def retriever():
 
 
 @st.cache_data
+def sources():
+    return pd.read_csv(ROOT / "sources.csv", dtype=str).set_index("doc_id")
+
+
 def titles():
-    return pd.read_csv(ROOT / "sources.csv", dtype=str).set_index("doc_id").title.to_dict()
+    return sources().title.to_dict()
+
+
+def link(p):
+    url = sources().url[p["doc_id"]]
+    return f"{url}#page={p['page']}" if url.endswith(".pdf") else url  # PDFs open at the cited page
 
 
 def method():
@@ -50,36 +59,48 @@ def ask(question):
 
 
 def show(turn):
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar=":material/person:"):
         st.markdown(turn["question"])
         if turn["cut"]:
             st.caption(f"Your question was shortened to the first {MAX_CHARS:,} characters.")
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=":material/account_balance:"):
         if turn["result"] is None:
             st.info("The AI answer is unavailable right now (the free daily limit may be used up). "
-                    "The passages below are the most relevant report pages.")
+                    "The report pages below are the closest matches to your question.", icon=":material/cloud_off:")
         else:
             st.markdown(turn["result"]["text"])
-        with st.expander(f"Sources ({len(turn['passages'])} report pages)"):
-            if turn["result"] and turn["result"]["cpi"]:
-                c = turn["result"]["cpi"]
-                st.markdown(f"**[CPI] OpenDOSM consumer price index:** {c}")
+        with st.expander(f"Sources · {len(turn['passages'])} report pages", icon=":material/menu_book:"):
+            c = turn["result"] and turn["result"]["cpi"]
+            if c and "error" not in c:
+                st.markdown(f"**[CPI]** OpenDOSM consumer price index: {c['state']}, {c['category']}, "
+                            f"{c['month']}: **{c['inflation_yoy_pct']}% year on year**")
+                if c.get("note"):
+                    st.caption(c["note"])
             for p in turn["passages"]:
-                st.markdown(f"**[{p['n']}] {p['title']}, page {p['page']}**  \n{p['text'][:300]}...")
+                st.markdown(f"**[{p['n']}]** [{p['title']}, page {p['page']}]({link(p)})")
+                st.caption(p["text"][:220].replace("$", r"\$") + "…")  # $ would start LaTeX
 
 
+st.caption(":material/account_balance: Retrieval-augmented answers from Bank Negara Malaysia reports")
 st.title("Malaysia Economy Assistant")
-st.markdown("Ask about Malaysia's economy, inflation and interest rates, in English or Malay. Answers come from "
-            "Bank Negara Malaysia's Economic and Monetary Reviews (2022–2025) and Monetary Policy Statements, "
-            "and OpenDOSM price data up to September 2026, with the page for every fact.")
-st.caption(f"Each question is answered on its own; follow-ups like \"and in 2023?\" won't remember the last one. "
-           f"[See the inflation dashboard]({DASHBOARD}) · [How it works]({REPO})")
+st.markdown("Ask about growth, inflation and interest rates **in English or Bahasa Melayu**. "
+            "Every answer cites the report page it came from.")
+st.markdown(":blue-badge[:material/description: 33 BNM reports and statements, 2022–2026] "
+            ":blue-badge[:material/query_stats: State inflation to Sep 2026] "
+            ":green-badge[:material/check_circle: 90% of test answers correct]")
+st.caption(f"Each question is answered on its own, so follow-ups like \"and in 2023?\" need the full question. "
+           f"[Inflation dashboard ↗]({DASHBOARD}) · [How it works ↗]({REPO})")
 
 if "history" not in st.session_state:
     st.session_state.history = []
-cols = st.columns(2)
-clicked = next((q for i, q in enumerate(EXAMPLES) if cols[i % 2].button(q, key=f"ex{i}", width="stretch")), None)
-question = st.chat_input("Ask a question") or clicked
+# an example click is stored by its callback before this rerun, so the starter list is already gone
+question = st.chat_input("Ask about inflation, GDP or the OPR, in English or Bahasa Melayu") or \
+    st.session_state.pop("example", None)
+if not st.session_state.history and not question:  # starter questions only on an empty chat
+    st.markdown("**Try a question**")
+    cols = st.columns(2)
+    for i, q in enumerate(EXAMPLES):
+        cols[i % 2].button(q, key=f"ex{i}", width="stretch", on_click=st.session_state.update, kwargs={"example": q})
 
 for turn in st.session_state.history:
     show(turn)
