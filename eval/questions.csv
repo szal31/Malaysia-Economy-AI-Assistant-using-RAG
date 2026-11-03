@@ -1,0 +1,42 @@
+id,question,lang,type,pattern
+r01,"How much did prices rise on average in Malaysia in 2022, and why?",en,report,Headline inflation increased in 2022
+r02,Berapakah kadar inflasi purata Malaysia pada tahun 2022 dan apakah puncanya?,ms,report,Headline inflation increased in 2022
+r03,By how much did Malaysia's economy expand in 2022?,en,report,expanded by 8\.7% \(2021
+r04,How fast did the economy grow in 2023 and what held it back?,en,report,(economy grew by|pace of) 3\.7%
+r05,Mengapakah pertumbuhan ekonomi Malaysia lebih perlahan pada tahun 2023?,ms,report,(economy grew by|pace of) 3\.7%
+r06,What was Malaysia's GDP growth in 2024 and what drove it?,en,report,5\.1% \(2023: 3\.6%\)|growth of 5\.1%
+r07,Berapakah pertumbuhan ekonomi Malaysia pada tahun 2024?,ms,report,5\.1% \(2023: 3\.6%\)|growth of 5\.1%
+r08,How fast did the economy grow in 2025?,en,report,grew by 5\.2% \(2024|expanded by 5\.2% in 2025|grew by 5\.2% in 2025
+r09,Ekonomi Malaysia berkembang berapa peratus pada 2025?,ms,report,grew by 5\.2% \(2024|expanded by 5\.2% in 2025|grew by 5\.2% in 2025
+r10,What growth does Bank Negara expect for 2026?,en,report,grow between 4% and 5% in 2026
+r11,Berapakah unjuran pertumbuhan ekonomi Malaysia bagi tahun 2026?,ms,report,grow between 4% and 5% in 2026
+r12,What inflation rate does BNM expect in 2026?,en,report,between 1\.5% and 2\.5% in 2026
+r13,What was average inflation in 2023?,en,report,moderated in 2023 to an average of 2\.5%
+r14,What was average inflation in 2024?,en,report,Headline inflation moderated in 2024
+r15,Berapakah purata inflasi pada tahun 2024?,ms,report,Headline inflation moderated in 2024
+r16,Why was inflation so low in 2025?,en,report,moderated (further in 2025|to 1\.4%)
+r17,When did Bank Negara cut the OPR to 2.75%?,en,report,reduce the Overnight Policy Rate
+r18,Bilakah BNM menurunkan OPR kepada 2.75%?,ms,report,reduce the Overnight Policy Rate
+r19,When did BNM start raising interest rates after the pandemic?,en,report,by 25 basis points to 2\.00 percent
+r20,When was the OPR raised to 3%?,en,report,by 25 basis points to 3\.00 percent
+r21,Bilakah OPR dinaikkan kepada 3 peratus?,ms,report,by 25 basis points to 3\.00 percent
+r22,How did the 2024 diesel price change affect inflation?,en,report,diesel price (adjustment|subsidy rationalisation)
+r23,Apakah kesan perubahan harga diesel pada 2024 terhadap inflasi?,ms,report,diesel price (adjustment|subsidy rationalisation)
+r24,How much did petrol and diesel prices go up when subsidies were cut?,en,report,RON95 and diesel prices were increased
+r25,How did the ringgit do against the US dollar in 2024?,en,report,one of the few currencies in Asia to appreciate
+r26,Bagaimanakah prestasi ringgit berbanding dolar AS pada 2025?,ms,report,appreciated against the US dollar by 10\.2%
+r27,Why did the 2023 subsidy changes barely move inflation?,en,report,price ceilings for chicken|chicken subsidy and price controls
+r28,What was special about business investment in 2024?,en,report,highest investment growth in a decade
+r29,What does BNM expect from the RON95 subsidy cut and the SST expansion?,en,report,RON95 subsidy rationalisation
+r30,Apakah jangkaan BNM tentang kesan pengembangan SST dan rasionalisasi subsidi RON95?,ms,report,RON95 subsidy rationalisation
+r31,How fast did lending to businesses and households grow in 2024?,en,report,credit to the private non-financial sector grew by 5\.2%
+c01,What was food inflation in Sabah in September 2026?,en,cpi,
+c02,Berapakah inflasi pengangkutan di Selangor pada Januari 2024?,ms,cpi,
+c03,What is the latest overall inflation rate for Malaysia?,en,cpi,
+c04,What was education inflation in Penang in December 2023?,en,cpi,
+c05,Berapakah inflasi keseluruhan di Kuala Lumpur bulan lepas?,ms,cpi,
+n01,What will the OPR be in 2028?,en,none,
+n02,What is the FIFA ranking of Malaysia's football team?,en,none,
+n03,Berapakah harga sebuah kereta Proton Saga?,ms,none,
+n04,What is the minimum wage in Singapore?,en,none,
+n05,Who will win the next general election?,en,none,
