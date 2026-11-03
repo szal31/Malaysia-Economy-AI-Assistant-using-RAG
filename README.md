@@ -4,7 +4,7 @@ Ask questions about Malaysia's economy, inflation and interest rates in **Englis
 answer with the report page for every fact. Answers come from Bank Negara Malaysia's reports (retrieval-augmented
 generation), and state-level inflation figures come from a lookup tool over OpenDOSM consumer price data.
 
-**Live demo:** _coming soon_  
+**Live demo:** https://malaysia-economic-ai-assistant.streamlit.app/  
 **Companion dashboard:** [Malaysia inflation in Power BI](https://app.powerbi.com/view?r=eyJrIjoiZmZjNDg2ODItNzJhMy00OTllLWJmNTYtM2Q5MDg4YWFiMGQxIiwidCI6ImNkY2JiMGUyLTlmZWEtNGY1NC04NjcwLTY3MjcwNzc5N2FkYSIsImMiOjEwfQ%3D%3D)
 
 ![Search method comparison](output/1_retrieval_comparison.png)
