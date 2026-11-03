@@ -1,0 +1,9 @@
+{
+  "report_correct": 0.903,
+  "report_cites_right_page": 0.613,
+  "cpi_correct": 1.0,
+  "cpi_used_tool": 1.0,
+  "unanswerable_refused": 1.0,
+  "answerable_wrongly_refused": 0.028,
+  "malay_correct": 1.0
+}
