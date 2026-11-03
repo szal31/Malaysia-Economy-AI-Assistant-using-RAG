@@ -59,3 +59,35 @@ def embed(texts, task):
         out += [e.values for e in r.embeddings]
     v = np.asarray(out, dtype=np.float32)
     return v / np.linalg.norm(v, axis=1, keepdims=True)
+
+
+SYSTEM = """You answer questions about Malaysia's economy for the public.
+Use ONLY the numbered passages from Bank Negara Malaysia reports below, and the cpi_lookup tool for
+consumer price index or inflation numbers by state, category or month.
+- Cite every fact with its passage number in square brackets, like [2]. Cite cpi_lookup results as [CPI].
+- Answer in the language of the question (English or Malay), in a few short sentences.
+- If the passages and the tool don't contain the answer, reply exactly:
+  "I couldn't find this in the reports." (in Malay: "Saya tidak menemui maklumat ini dalam laporan.")
+- Never guess numbers, dates or forecasts that aren't in the passages or the tool result."""
+
+
+def answer(question, passages):
+    """Gemini's answer from numbered passages ({n, title, year, page, text}); may call cpi_lookup."""
+    from cpi import cpi_lookup
+
+    used = {}
+
+    def cpi_tool(state: str = "Malaysia", category: str = "Overall", month: str | None = None) -> dict:
+        result = cpi_lookup(state, category, month)
+        used.update(result)
+        return result
+    cpi_tool.__doc__ = cpi_lookup.__doc__
+    cpi_tool.__name__ = "cpi_lookup"
+
+    context = "\n\n".join(f"[{p['n']}] {p['title']}, page {p['page']}:\n{p['text']}" for p in passages)
+    r = _retry(lambda: client().models.generate_content(
+        model=CHAT_MODEL, contents=f"Passages:\n{context}\n\nQuestion: {question}",
+        config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=[cpi_tool], temperature=0)))
+    if not r.text:
+        raise Unavailable("empty response")
+    return {"text": r.text.strip(), "cpi": used or None}
