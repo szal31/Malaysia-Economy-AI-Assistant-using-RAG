@@ -41,16 +41,7 @@ def method():
 def ask(question):
     cut = len(question) > MAX_CHARS
     question = question[:MAX_CHARS]
-    r = retriever()
-    try:
-        qvec = llm.embed([question], "RETRIEVAL_QUERY")[0]
-        m = method()
-        rows = r.bm25(question, TOP_K) if m == "bm25" else \
-            r.dense(qvec, TOP_K) if m == "dense" else r.hybrid(question, qvec, TOP_K)
-    except llm.Unavailable:  # keyword search needs no API call
-        rows = r.bm25(question, TOP_K)
-    passages = [{"n": n, "title": titles()[c.doc_id], "page": int(c.page), "text": c.text}
-                for n, c in enumerate(r.chunks.iloc[rows].itertuples(), start=1)]
+    passages = retrieve.passages(retriever(), question, method(), titles(), TOP_K)
     try:
         result = llm.answer(question, passages)
     except llm.Unavailable:

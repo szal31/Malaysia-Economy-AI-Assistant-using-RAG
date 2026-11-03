@@ -55,7 +55,7 @@ def pages(row, content):
     return [(i, p.extract_text() or "") for i, p in enumerate(PdfReader(io.BytesIO(content)).pages, start=1)]
 
 
-def chunk(page_texts, words=250, overlap=50):
+def chunk(page_texts, words=400, overlap=60):  # 400 words keeps the index under the free 1,000 embeddings a day
     out = []
     for page, text in page_texts:
         tokens = re.sub(r"\s+", " ", text).strip().split(" ")

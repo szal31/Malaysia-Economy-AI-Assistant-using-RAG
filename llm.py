@@ -12,8 +12,8 @@ import numpy as np
 from google import genai
 from google.genai import errors, types
 
-CHAT_MODEL = "gemini-flash-latest"
-EMBED_MODEL = "gemini-embedding-001"
+CHAT_MODEL = "gemini-3.5-flash"  # pinned so results are reproducible; newer Flash models were often overloaded
+EMBED_MODEL = "gemini-embedding-001"  # embedding-2 counts every text as a request (1,000/day free), too few to index
 SECRETS = Path(__file__).parent / ".streamlit" / "secrets.toml"
 
 
@@ -36,13 +36,13 @@ def client():
     return _client
 
 
-def _retry(call, tries=6):
-    """Wait and retry on rate limits (the free tier allows a limited number of requests per minute)."""
+def _retry(call, tries=8):
+    """Wait and retry on rate limits (free tier) and temporary overload."""
     for attempt in range(tries):
         try:
             return call()
         except errors.APIError as e:
-            if e.code != 429 or attempt == tries - 1:
+            if e.code not in (429, 500, 503) or attempt == tries - 1:
                 raise Unavailable(str(e)) from e
             time.sleep(min(60, 5 * 2 ** attempt))
         except OSError as e:  # network
@@ -52,10 +52,11 @@ def _retry(call, tries=6):
 def embed(texts, task):
     """Unit-length float32 vectors; task is "RETRIEVAL_DOCUMENT" or "RETRIEVAL_QUERY"."""
     out = []
-    for i in range(0, len(texts), 100):  # API batch limit
-        batch = texts[i:i + 100]
+    for i in range(0, len(texts), 40):  # small batches stay under the free 30k tokens-per-minute limit
+        batch = texts[i:i + 40]
         r = _retry(lambda: client().models.embed_content(
-            model=EMBED_MODEL, contents=batch, config=types.EmbedContentConfig(task_type=task, output_dimensionality=768)))
+            model=EMBED_MODEL, contents=[types.Content(parts=[types.Part(text=t)]) for t in batch],  # one vector each
+            config=types.EmbedContentConfig(task_type=task, output_dimensionality=768)))
         out += [e.values for e in r.embeddings]
     v = np.asarray(out, dtype=np.float32)
     return v / np.linalg.norm(v, axis=1, keepdims=True)

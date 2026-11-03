@@ -38,6 +38,19 @@ class Retriever:
         return sorted(score, key=lambda i: -score[i])[:k]
 
 
+def passages(r, question, method, titles, k):
+    """The top-k passages for a question, numbered for citation. Falls back to BM25 if Gemini is down."""
+    import llm
+    try:
+        qvec = llm.embed([question], "RETRIEVAL_QUERY")[0]
+        rows = r.bm25(question, k) if method == "bm25" else \
+            r.dense(qvec, k) if method == "dense" else r.hybrid(question, qvec, k)
+    except llm.Unavailable:  # keyword search needs no API call
+        rows = r.bm25(question, k)
+    return [{"n": n, "doc_id": c.doc_id, "title": titles[c.doc_id], "page": int(c.page), "text": c.text}
+            for n, c in enumerate(r.chunks.iloc[rows].itertuples(), start=1)]
+
+
 def load(chunks_text):
     """Join the committed index (ids and vectors) to passage text rebuilt from bnm.gov.my."""
     ids = pd.read_parquet(INDEX / "chunks.parquet")

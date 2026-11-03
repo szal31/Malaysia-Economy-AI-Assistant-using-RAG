@@ -4,6 +4,8 @@ The right pages for each question are not hand-picked: eval/questions.csv gives 
 answer, and every report page containing it counts as a correct page.
 
 Usage:  python evaluate.py retrieval   (writes output/retrieval.json and output/1_retrieval_comparison.png)
+        python evaluate.py answers     (asks every question; writes output/answers.csv to grade by hand)
+        python evaluate.py summary     (after filling the "correct" column with 1 or 0)
 """
 import json
 import re
@@ -102,5 +104,50 @@ def _chart(table, chosen):
     fig.savefig(OUT / "1_retrieval_comparison.png", facecolor=SURFACE)
 
 
+REFUSALS = ("couldn't find this in the reports", "tidak menemui maklumat ini")
+
+
+def answers():
+    """Run every question through the app's own pipeline. Citations and refusals are checked
+    automatically; whether the answer is right is left to a human ("correct" column)."""
+    import llm
+    import retrieve
+    from reports import build_chunks
+
+    chunks = build_chunks()
+    r = retrieve.load(chunks)
+    titles = pd.read_csv(ROOT / "sources.csv", dtype=str).set_index("doc_id").title.to_dict()
+    method = json.loads((OUT / "retrieval.json").read_text())["chosen"]
+    rows = []
+    for q in pd.read_csv(QUESTIONS).itertuples():
+        ps = retrieve.passages(r, q.question, method, titles, 5)
+        res = llm.answer(q.question, ps)
+        cited = {int(n) for n in re.findall(r"\[(\d+)\]", res["text"]) if 0 < int(n) <= len(ps)}
+        gold = gold_pages(chunks, q.pattern) if q.type == "report" else set()
+        rows.append({"id": q.id, "type": q.type, "lang": q.lang, "question": q.question, "answer": res["text"],
+                     "cited": "; ".join(f"{ps[n - 1]['title']} p.{ps[n - 1]['page']}" for n in sorted(cited)),
+                     "cites_right_page": any((ps[n - 1]["doc_id"], ps[n - 1]["page"]) in gold for n in cited)
+                     if q.type == "report" else None,
+                     "used_cpi_tool": res["cpi"] is not None,
+                     "refused": any(x in res["text"].lower() for x in REFUSALS), "correct": ""})
+        print(q.id, rows[-1]["answer"][:100].replace("\n", " "))
+    pd.DataFrame(rows).to_csv(OUT / "answers.csv", index=False)
+
+
+def summary():
+    d = pd.read_csv(OUT / "answers.csv")
+    # Self-check: every answer has been graded by hand.
+    assert d.correct.isin([0, 1]).all(), "fill the correct column with 1 or 0 for every row"
+    rep, cpi, none = (d[d.type == t] for t in ("report", "cpi", "none"))
+    result = {"report_correct": rep.correct.mean(), "report_cites_right_page": rep.cites_right_page.mean(),
+              "cpi_correct": cpi.correct.mean(), "cpi_used_tool": cpi.used_cpi_tool.mean(),
+              "unanswerable_refused": none.refused.mean(),
+              "answerable_wrongly_refused": d[d.type != "none"].refused.mean(),
+              "malay_correct": d[(d.lang == "ms") & (d.type != "none")].correct.mean()}
+    result = {k: round(float(v), 3) for k, v in result.items()}
+    (OUT / "answers_summary.json").write_text(json.dumps(result, indent=2))
+    print(json.dumps(result, indent=2))
+
+
 if __name__ == "__main__":
-    {"retrieval": retrieval}[sys.argv[1]]()
+    {"retrieval": retrieval, "answers": answers, "summary": summary}[sys.argv[1]]()
