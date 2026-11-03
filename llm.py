@@ -12,7 +12,8 @@ import numpy as np
 from google import genai
 from google.genai import errors, types
 
-CHAT_MODEL = "gemini-3.5-flash"  # pinned so results are reproducible; newer Flash models were often overloaded
+# Tried in order. Each has its own free daily limit: Flash-Lite about 500 answers, Flash only 20.
+CHAT_MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3.5-flash"]
 EMBED_MODEL = "gemini-embedding-001"  # embedding-2 counts every text as a request (1,000/day free), too few to index
 SECRETS = Path(__file__).parent / ".streamlit" / "secrets.toml"
 
@@ -42,7 +43,8 @@ def _retry(call, tries=8):
         try:
             return call()
         except errors.APIError as e:
-            if e.code not in (429, 500, 503) or attempt == tries - 1:
+            daily = e.code == 429 and "PerDay" in str(e)  # waiting won't help until tomorrow
+            if e.code not in (429, 500, 503) or daily or attempt == tries - 1:
                 raise Unavailable(str(e)) from e
             time.sleep(min(60, 5 * 2 ** attempt))
         except OSError as e:  # network
@@ -86,9 +88,15 @@ def answer(question, passages):
     cpi_tool.__name__ = "cpi_lookup"
 
     context = "\n\n".join(f"[{p['n']}] {p['title']}, page {p['page']}:\n{p['text']}" for p in passages)
-    r = _retry(lambda: client().models.generate_content(
-        model=CHAT_MODEL, contents=f"Passages:\n{context}\n\nQuestion: {question}",
-        config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=[cpi_tool], temperature=0)))
+    for i, model in enumerate(CHAT_MODELS):
+        try:
+            r = _retry(lambda: client().models.generate_content(
+                model=model, contents=f"Passages:\n{context}\n\nQuestion: {question}",
+                config=types.GenerateContentConfig(system_instruction=SYSTEM, tools=[cpi_tool], temperature=0)))
+            break
+        except Unavailable:
+            if i == len(CHAT_MODELS) - 1:
+                raise
     if not r.text:
         raise Unavailable("empty response")
     return {"text": r.text.strip(), "cpi": used or None}
