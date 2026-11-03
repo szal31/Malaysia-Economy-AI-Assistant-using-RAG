@@ -13,7 +13,7 @@ import reports
 import retrieve
 
 ROOT = Path(__file__).parent
-REPO = "https://github.com/szal31/Malaysia-Economy-AI-Assistant-Using-RAG"
+REPO = "https://github.com/szal31/Malaysia-Economy-AI-Assistant-using-RAG"
 DASHBOARD = ("https://app.powerbi.com/view?r=eyJrIjoiZmZjNDg2ODItNzJhMy00OTllLWJmNTYtM2Q5MDg4YWFiMGQxIiwidCI6ImN"
              "kY2JiMGUyLTlmZWEtNGY1NC04NjcwLTY3MjcwNzc5N2FkYSIsImMiOjEwfQ%3D%3D")
 MAX_CHARS, TOP_K = 1000, 5
