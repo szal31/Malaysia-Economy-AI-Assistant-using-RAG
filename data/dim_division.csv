@@ -1,0 +1,15 @@
+division_code,division,sort_order
+overall,Overall,0
+01,Food & Non-Alcoholic Beverages,1
+02,Alcoholic Beverages & Tobacco,2
+03,Clothing & Footwear,3
+04,"Housing, Water, Electricity & Gas",4
+05,Furnishings & Household Maintenance,5
+06,Health,6
+07,Transport,7
+08,Information & Communication,8
+09,"Recreation, Sport & Culture",9
+10,Education,10
+11,Restaurants & Accommodation,11
+12,Insurance & Financial Services,12
+13,Personal Care & Misc.,13
