@@ -1,0 +1,34 @@
+doc_id,title,year,kind,url,sha256
+emr2022,BNM Economic and Monetary Review 2022,2022,pdf,https://www.bnm.gov.my/documents/20124/10150285/emr2022_en_book.pdf,10855ec32d23aca0353c5b13ebecb666fe8ce9487f7e5ea9e164fe707730d43d
+emr2023,BNM Economic and Monetary Review 2023,2023,pdf,https://www.bnm.gov.my/documents/20124/12141961/emr2023_en_book.pdf,d1b042a0a4f7a18f656e13daab6c08625bd3ead3cff8c0dd73e84d7957abc9eb
+emr2024,BNM Economic and Monetary Review 2024,2024,pdf,https://www.bnm.gov.my/documents/20124/17523401/emr2024_en_book.pdf,0f1560b9fe6b7c42a590b37f378475954c4904968f01999e888402de94482952
+emr2025,BNM Economic and Monetary Review 2025,2025,pdf,https://www.bnm.gov.my/documents/20124/21185020/emr2025_en_book.pdf,81fcec4d733cbe17613b132b61d2716de56594c9e1e62553751fb3b59db8b2e7
+mps20220120,"BNM Monetary Policy Statement, 20 Jan 2022",2022,html,https://www.bnm.gov.my/-/monetary-policy-statement-20012022,bc2f96d7126a4fbf5b542e2dfecd0a886357cb5b8deac52e270f47d53a5ad19b
+mps20220303,"BNM Monetary Policy Statement, 3 Mar 2022",2022,html,https://www.bnm.gov.my/-/monetary-policy-statement-03032022,3931f75c30a929e3e37d05ca8946aeb779a4422e7662c0bd6e2dc04c52b218d6
+mps20220511,"BNM Monetary Policy Statement, 11 May 2022",2022,html,https://www.bnm.gov.my/-/monetary-policy-statement-11052022,621d218f4ab18e199fda2a63fcd9bcec44ef3fdcf5c8b8b144aee13329b6ae9f
+mps20220706,"BNM Monetary Policy Statement, 6 Jul 2022",2022,html,https://www.bnm.gov.my/-/monetary-policy-statement-06072022,eaadfd8ada8c8c45005af755614fdd2ae812057d42d1d224d8f59e1ad95ea8dc
+mps20220908,"BNM Monetary Policy Statement, 8 Sep 2022",2022,html,https://www.bnm.gov.my/-/monetary-policy-statement-08092022,50de9557c5c3edc44b8fd6c50ec04b12dcdfc3f5cfbe19a4ee2adc69fafb62a9
+mps20221103,"BNM Monetary Policy Statement, 3 Nov 2022",2022,html,https://www.bnm.gov.my/-/monetary-policy-statement-03112022,3bf4119c6a6e1103e461648f44eb20478a44da4fac3cba1158c4f89b785c29a3
+mps20230119,"BNM Monetary Policy Statement, 19 Jan 2023",2023,html,https://www.bnm.gov.my/-/monetary-policy-statement-19012023,613838423d3076a2a6479d2420ea42012428f038b1ef3124a713c6333fdd00f8
+mps20230309,"BNM Monetary Policy Statement, 9 Mar 2023",2023,html,https://www.bnm.gov.my/-/monetary-policy-statement-09032023,0c1cd1c33d8e95c320685effc0db307adbf75ec4b61e4cf5aa25195556df283c
+mps20230503,"BNM Monetary Policy Statement, 3 May 2023",2023,html,https://www.bnm.gov.my/-/monetary-policy-statement-03052023,52885108dc904e627a9e2a2e6b419649ca4b6f41573a7fb6516026a7eed751a7
+mps20230706,"BNM Monetary Policy Statement, 6 Jul 2023",2023,html,https://www.bnm.gov.my/-/monetary-policy-statement-06072023,032634633075d1518a13ef0d4a05d2085dccc00540d0a5f0cc80b132b612ceb4
+mps20230907,"BNM Monetary Policy Statement, 7 Sep 2023",2023,html,https://www.bnm.gov.my/-/monetary-policy-statement-07092023,2a945bac447496af9ddd296f879c1bdd6bd46cfc488ffe212e712af50328251c
+mps20231102,"BNM Monetary Policy Statement, 2 Nov 2023",2023,html,https://www.bnm.gov.my/-/monetary-policy-statement-02112023,241552559bca4b170814913059e153e5b3eedc68e9cbe72e8e332b4e5e7de383
+mps20240124,"BNM Monetary Policy Statement, 24 Jan 2024",2024,html,https://www.bnm.gov.my/-/monetary-policy-statement-24012024,2c59172819bf0b6eb0cc4b558f8ad1c46a5a508dd619dcb169cbf646913b0745
+mps20240307,"BNM Monetary Policy Statement, 7 Mar 2024",2024,html,https://www.bnm.gov.my/-/monetary-policy-statement-07032024,d3ad177eb5af82cbaf291b3cacffcbe6f9c1a894a29d85442aa18cfab6cc2f4b
+mps20240509,"BNM Monetary Policy Statement, 9 May 2024",2024,html,https://www.bnm.gov.my/-/monetary-policy-statement-09052024,5da947b7de0d97604e54356042869a0ac7fe66aedf3a20ca0b0a24bf7fd5875f
+mps20240711,"BNM Monetary Policy Statement, 11 Jul 2024",2024,html,https://www.bnm.gov.my/-/monetary-policy-statement-11072024,39e5334bb887b240d05fdfb26c8a6fa4f03a8ef67dba6cc8d5600794f93d39a5
+mps20240905,"BNM Monetary Policy Statement, 5 Sep 2024",2024,html,https://www.bnm.gov.my/-/monetary-policy-statement-05092024,85d5692f23c1906470203f11e1afea00b7c3d650c8740bc3d92c5423e1e04b15
+mps20241106,"BNM Monetary Policy Statement, 6 Nov 2024",2024,html,https://www.bnm.gov.my/-/monetary-policy-statement-06112024,5a96f023d2b46bdeb8e6f1e451c3408b106fbe063fd76cef0ec44e2d7715b801
+mps20250122,"BNM Monetary Policy Statement, 22 Jan 2025",2025,html,https://www.bnm.gov.my/-/monetary-policy-statement-22012025,39ce2411546b83c5243e97a098184a092a39561d884c3a0f03567c778713a480
+mps20250306,"BNM Monetary Policy Statement, 6 Mar 2025",2025,html,https://www.bnm.gov.my/-/monetary-policy-statement-06032025,e7e7c583d2b42ab7233c3ddf8e8cfdd75b8b79ed183683d241d0af00fd117934
+mps20250508,"BNM Monetary Policy Statement, 8 May 2025",2025,html,https://www.bnm.gov.my/-/monetary-policy-statement-08052025,ed6f4b82ee0f3f2a370d7aee49d9a8dfca4a4836dfecd984d3376ac98278905e
+mps20250709,"BNM Monetary Policy Statement, 9 Jul 2025",2025,html,https://www.bnm.gov.my/-/monetary-policy-statement-09072025,99ec069dbbe730274dc152ef26eec8b2312554d52fa0855638d0dc0b6a0e6355
+mps20250904,"BNM Monetary Policy Statement, 4 Sep 2025",2025,html,https://www.bnm.gov.my/-/monetary-policy-statement-04092025,20fe0b526e50079dab1134757cefaaa96f4e93f415e20476904bb725473202d6
+mps20251106,"BNM Monetary Policy Statement, 6 Nov 2025",2025,html,https://www.bnm.gov.my/-/monetary-policy-statement-06112025,1b8adf60f0344a542c932abdc857b2c84f17f3f4042bedc3db23b6620237d6af
+mps20260122,"BNM Monetary Policy Statement, 22 Jan 2026",2026,html,https://www.bnm.gov.my/-/monetary-policy-statement-22012026,eb41614977a271db2cdbd638cd0bc3d2bdd79e4093df156c85e7b46dae0d89d8
+mps20260305,"BNM Monetary Policy Statement, 5 Mar 2026",2026,html,https://www.bnm.gov.my/-/monetary-policy-statement-05032026,8f4ed739f61082cbb594fca19aa05a719909d588808c3a1a5e1b28e2fa1a0f6b
+mps20260507,"BNM Monetary Policy Statement, 7 May 2026",2026,html,https://www.bnm.gov.my/-/monetary-policy-statement-07052026,3ce8eb0e2f7dce6880326f0cee844bc20f37c70bd7fe6f2b9a92a0ba7e8ac4d4
+mps20260709,"BNM Monetary Policy Statement, 9 Jul 2026",2026,html,https://www.bnm.gov.my/-/monetary-policy-statement-09072026,a69a798ef28d6660a1d9b6ce825177d201f6b599536e8d8f208d842f2d353fcf
+mps20260903,"BNM Monetary Policy Statement, 3 Sep 2026",2026,html,https://www.bnm.gov.my/-/monetary-policy-statement-03092026,0863c174e1283a839738c3b9c9c5fbc0feafebd551cf24fae57317d61cf68146
