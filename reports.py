@@ -26,13 +26,18 @@ class SourceChanged(Exception):
 
 
 def _download(row):
-    r = requests.get(row["url"], timeout=120)
-    r.raise_for_status()
+    try:
+        r = requests.get(row["url"], timeout=120)
+        r.raise_for_status()
+    except requests.RequestException as e:  # moved, removed or bnm.gov.my unreachable
+        raise SourceChanged(f"{row['doc_id']}: {e}") from e
     if row["kind"] == "pdf":
         return r.content
     # HTML pages carry changing tokens, so keep (and hash) only the statement's own text
     from bs4 import BeautifulSoup
     article = BeautifulSoup(r.text, "html.parser").select_one(".journal-content-article")
+    if article is None:
+        raise SourceChanged(f"{row['doc_id']}: page layout changed")
     text = article.get_text(" ", strip=True).split(" See also:")[0]
     return text.encode("utf-8")
 

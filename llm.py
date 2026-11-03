@@ -8,6 +8,7 @@ import time
 import tomllib
 from pathlib import Path
 
+import httpx
 import numpy as np
 from google import genai
 from google.genai import errors, types
@@ -37,8 +38,9 @@ def client():
     return _client
 
 
-def _retry(call, tries=8):
-    """Wait and retry on rate limits (free tier) and temporary overload."""
+def _retry(call, tries=3):
+    """Wait and retry on rate limits (free tier) and temporary overload. Few tries by default so visitors
+    aren't kept waiting; indexing passes more."""
     for attempt in range(tries):
         try:
             return call()
@@ -47,18 +49,18 @@ def _retry(call, tries=8):
             if e.code not in (429, 500, 503) or daily or attempt == tries - 1:
                 raise Unavailable(str(e)) from e
             time.sleep(min(60, 5 * 2 ** attempt))
-        except OSError as e:  # network
+        except (OSError, httpx.HTTPError) as e:  # network
             raise Unavailable(str(e)) from e
 
 
-def embed(texts, task):
+def embed(texts, task, tries=3):
     """Unit-length float32 vectors; task is "RETRIEVAL_DOCUMENT" or "RETRIEVAL_QUERY"."""
     out = []
     for i in range(0, len(texts), 40):  # small batches stay under the free 30k tokens-per-minute limit
         batch = texts[i:i + 40]
         r = _retry(lambda: client().models.embed_content(
             model=EMBED_MODEL, contents=[types.Content(parts=[types.Part(text=t)]) for t in batch],  # one vector each
-            config=types.EmbedContentConfig(task_type=task, output_dimensionality=768)))
+            config=types.EmbedContentConfig(task_type=task, output_dimensionality=768)), tries)
         out += [e.values for e in r.embeddings]
     v = np.asarray(out, dtype=np.float32)
     return v / np.linalg.norm(v, axis=1, keepdims=True)

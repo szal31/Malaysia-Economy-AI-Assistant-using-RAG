@@ -88,8 +88,8 @@ if question and question.strip():
         with st.spinner("Reading the reports..."):
             turn = ask(question.strip())
     except reports.SourceChanged:
-        st.error("Bank Negara has changed one of the source documents, so the search index needs rebuilding. "
-                 "Please try again later.")
+        st.error("A Bank Negara source document has changed or bnm.gov.my can't be reached right now, so the "
+                 "reports can't be loaded. Please try again later.")
         st.stop()
     st.session_state.history.append(turn)
     show(turn)

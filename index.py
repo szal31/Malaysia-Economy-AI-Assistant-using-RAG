@@ -24,7 +24,7 @@ def main():
     todo = chunks[~chunks.chunk_id.isin(done.chunk_id)]
     for i in range(0, len(todo), 40):
         batch = todo.iloc[i:i + 40]
-        vecs = llm.embed(batch.text.tolist(), "RETRIEVAL_DOCUMENT")
+        vecs = llm.embed(batch.text.tolist(), "RETRIEVAL_DOCUMENT", tries=8)
         done = pd.concat([done, pd.DataFrame({"chunk_id": batch.chunk_id, "vector": list(vecs)})])
         done.to_parquet(PROGRESS)
         print(f"{len(done)}/{len(chunks)} embedded", flush=True)

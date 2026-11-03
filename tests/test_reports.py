@@ -27,3 +27,22 @@ def test_fetch_rejects_changed_file(tmp_path, monkeypatch):
     row = {"doc_id": "x", "kind": "pdf", "url": "http://invalid", "sha256": "0" * 64}
     with pytest.raises(reports.SourceChanged):
         reports.fetch(row)
+
+
+def test_moved_or_reshaped_document_counts_as_changed(monkeypatch):
+    import pytest
+    import requests
+    from types import SimpleNamespace
+
+    import reports
+
+    def gone(url, timeout):
+        return SimpleNamespace(raise_for_status=lambda: (_ for _ in ()).throw(requests.HTTPError("404")))
+    monkeypatch.setattr(reports.requests, "get", gone)
+    with pytest.raises(reports.SourceChanged):
+        reports._download({"doc_id": "emr2024", "kind": "pdf", "url": "u"})
+
+    monkeypatch.setattr(reports.requests, "get",
+                        lambda url, timeout: SimpleNamespace(raise_for_status=lambda: None, text="<html></html>"))
+    with pytest.raises(reports.SourceChanged):
+        reports._download({"doc_id": "mps20250709", "kind": "html", "url": "u"})
