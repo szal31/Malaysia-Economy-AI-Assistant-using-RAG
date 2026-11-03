@@ -1,0 +1,9 @@
+google-genai
+rank-bm25
+pypdf
+beautifulsoup4
+requests
+numpy
+pandas
+pyarrow
+streamlit
